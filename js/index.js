@@ -1,7 +1,7 @@
 document.addEventListener('deviceready', onDeviceReady, false);
 
 function onDeviceReady() {
-  
+  console.log("Plugin da camera: ",navigator.camera);
 }
 
 function validar(){
