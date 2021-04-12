@@ -1,8 +1,81 @@
+function tirarFoto(){
+
+    var options = {
+      // Some common settings are 20, 50, and 100
+      quality: 50,
+      destinationType: Camera.DestinationType.FILE_URI,
+      // In this app, dynamically set the picture source, Camera or photo gallery
+      sourceType: Camera.PictureSourceType.CAMERA,
+      encodingType: Camera.EncodingType.PNG,
+      mediaType: Camera.MediaType.PICTURE,
+      allowEdit: true,
+      correctOrientation: true
+  }
+
+
+  function getFileEntry(imgUri,callback) {
+       
+    window.resolveLocalFileSystemURL(imgUri, function success(fileEntry) {
+
+        // Do something with the FileEntry object, like write to it, u it, etc.
+        // writeFile(fileEntry, imgUri);
+        callback(fileEntry);
+        console.log("got file: " + fileEntry.fullPath);
+        // displayFileData(fileEntry.nativeURL, "Native URL");
+
+    }, function () {
+      // If don't get the FileEntry (which may happen when testing
+      // on some emulators), copy to a new FileEntry.
+        createNewFileEntry(imgUri,callback());
+    });
+}
+
+
+
+  function onSucess(imageUri){
+    getFileEntry(imageData,function(fileEntry){
+      $("#foto").attr("src",fileEntry.toURL());
+      $("#foto-path").val(fileEntry.toURL());
+    });
+      // displayFileData(fileEntry.nativeURL, "Native URL");
+
+
+
+
+  }
+
+  function onError(error){
+    console.log(error);
+    M.toast({html:"Erro capturando foto!"});
+
+  }
+
+  navigator.camera.getPicture(onSucess,onError,options);
+
+}
+
+
+
+
+
 document.addEventListener('deviceready', onDeviceReady, false);
 
 function onDeviceReady() {
   console.log("Plugin da camera: ",navigator.camera);
+
+  $("#tirar-foto").click(function(){
+    tirarFoto();
+  });  
+
+
 }
+
+
+
+
+
+
+
 
 function validar(){
   let erro = false;
@@ -41,10 +114,10 @@ function incluir(){
   var nome = $("#nome").val(); 
   var email = $("#email").val();
   var telefone = $("#telefone").val();
-
+  var foto = $("#foto-path").val();
 
   var item = '<li class="collection-item avatar"> '+
-              '    <img src="https://images.unsplash.com/photo-1574965234283-2f20a4cffa43? ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1569&q=80" '+
+              '    <img src="'+foto+'" '+
               '    class="circle">'+
               '    <span class="title">'+nome+'</span>'+
               '    <p>Email: '+email+'<br>' +
