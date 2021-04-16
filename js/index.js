@@ -8,7 +8,7 @@ function tirarFoto(){
       sourceType: Camera.PictureSourceType.CAMERA,
       encodingType: Camera.EncodingType.PNG,
       mediaType: Camera.MediaType.PICTURE,
-      allowEdit: true,
+      allowEdit: false,
       correctOrientation: true
   }
 
@@ -33,11 +33,16 @@ function tirarFoto(){
 
 
   function onSucess(imageUri){
+    $("#foto").attr("src",imageUri);
+    $("#foto-path").val(imageUri);
+
+    
+    /*
     getFileEntry(imageData,function(fileEntry){
       $("#foto").attr("src",fileEntry.toURL());
       $("#foto-path").val(fileEntry.toURL());
-    });
-      // displayFileData(fileEntry.nativeURL, "Native URL");
+    });*/
+   //displayFileData(imageUri, "Native URL");
 
 
 
